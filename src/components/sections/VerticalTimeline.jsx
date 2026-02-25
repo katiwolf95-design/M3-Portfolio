@@ -1,30 +1,53 @@
+import { useEffect, useRef, useState } from 'react'
+
 function VerticalTimeline() {
+    const [visibleItems, setVisibleItems] = useState([])
+    const containerRef = useRef(null)
+
     const items = [
         {
-            date: '2011',
-            title: 'Gestaltung & Kommunikation',
-            text: 'Visuelle Grundlalgen, Designvrständnis und klare Kommunikation.',
+        date: '2011',
+        title: 'Design & Communication',
+        text: 'Visual foundations, design thinking and clear communication.',
         },
         {
-            date: '2021',
-            title: 'Marketing & Wirkung',
-            text: 'Strategisches Denken, Reichweite und Markenlogik.',
+        date: '2021',
+        title: 'Marketing & Impact',
+        text: 'Strategic thinking, reach and brand logic.',
         },
         {
-            date: '2023',
-            title: 'Mensch & Psychologie',
-            text: 'Motivation, Beziehung und innere Prozesse.',
+        date: '2023',
+        title: 'Human Behavior & Psychology',
+        text: 'Understanding motivation, relationships and inner processes.',
         },
         {
-            date: '2026',
-            title: 'Systeme & Umsetzung',
-            text: 'Technische Umsetzung mit Fokus auf Struktur.',
+        date: '2026',
+        title: 'Systems & Execution',
+        text: 'Technical implementation with a focus on structure and sustainability.',
         },
     ];
 
+    useEffect(() => {
+        const handleScroll = () => {
+            const elements = document.querySelectorAll('.timeline-item')
+
+            elements.forEach((el, index) => {
+                const rect = el.getBoundingClientRect()
+                if (rect.top < window.innerHeight * 0.85) {
+                    setVisibleItems(prev => [...new Set([...prev, index])])
+                }
+            })
+        }
+
+        window.addEventListener('scroll', handleScroll)
+        handleScroll()
+
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
+
     return (
-        <section className="md:hidden max-w-xl mx-auto px-6 py-24">
-            <h2 className="text-2xl font-semibold mb-12">
+        <section className="md:hidden max-w-xl mx-auto px-6 py-10">
+            <h2 className="text-2xl font-semibold mb-20">
                 Werdegang
             </h2>
 
@@ -33,12 +56,24 @@ function VerticalTimeline() {
 
                 <ul className="space-y-12">
                     {items.map((item, i) => (
-                        <li key={i} className="relative pl-12">
-                            <span className="
-                                absolute left-0 top-2
+                        <li key={i} 
+                            className={`
+                                timeline-item relative pl-12
+                                transition-all duration-700 ease-out
+                                ${visibleItems.includes(i)
+                                    ? 'opacity-100 translate-y-0'
+                                    : 'opacity-0 translate-y-4'}
+                                `}
+                        >
+                            <span className={`
+                                absolute left-1.5 top-1
                                 w-3 h-3 rounded-full
-                                bg-orange-400
-                            " />
+                                transition-all duration-500
+                                ${visibleItems.includes(i)
+                                    ? 'bg-brand-yellow scale-125 shadow-md'
+                                    : 'bg-gray-300'}
+                                
+                            `} />
 
                             <span className="block text-sm font-bold text-orange-500 mb-2">
                                 {item.date}
