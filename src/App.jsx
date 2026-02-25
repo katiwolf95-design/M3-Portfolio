@@ -1,27 +1,21 @@
 import './App.css'
-import AboutMe from './components/AboutMe.jsx'
-import Hero from './components/sections/Hero.jsx'
-import BrandColors from './components/ui/BrandColors.jsx'
-import HorizontalTimeline from './components/sections/HorizontalTimeline.jsx'
-import VerticalTimeline from './components/sections/VerticalTimeline.jsx'
+import { Routes, Route } from "react-router-dom"
+import Header from './components/layout/Header.jsx'
+import Home from './pages/Home.jsx'
+import Projects from './pages/Projects.jsx'
+import ProjectDetail from './pages/ProjectDetail.jsx'
 
 function App() {
-
   return (
+    <>
+      <Header />
 
-    <main>
-      <Hero />
-      
-      <BrandColors />
-      
-      <VerticalTimeline />
-      <HorizontalTimeline />
-
-      <AboutMe />
-
-      {/* <Projects /> */}
-      {/* <Footer /> */}
-    </main>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/projects/:slug" element={<ProjectDetail />} />
+      </Routes>
+    </>
   )
 }
 
